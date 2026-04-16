@@ -44,8 +44,8 @@ function displayBooks(arr){
         <td>${arr[i]['title']}</td>
         <td>${arr[i]['author']}</td>
         <td>${arr[i]['pages']}</td>
-        <td>${arr[i]['read']}</td>
-        <td><button type="button" data-id=${arr[i]['id']}>Remove Book</button></td>
+        <td><button type='button' class='read' data-id=${arr[i]['id']}>${arr[i]['read']}</button></td>
+        <td><button type="button" class='remove' data-id=${arr[i]['id']}>Remove Book</button></td>
         </tr>
         `
     }
@@ -60,6 +60,7 @@ showform.addEventListener('click',()=>{
     document.getElementById('author').focus()
 })
 
+//ADDING DATA TO UI AND ARRAY
 form.addEventListener('submit',(e)=>{
     e.preventDefault()
     form.style.display='none'
@@ -76,8 +77,9 @@ form.addEventListener('submit',(e)=>{
     })
 })
 
+//REMOVING THE DATA FROM UI AND ARRAY
 table.addEventListener('click', (e)=>{
-    if (e.target.tagName==='BUTTON'){
+    if (e.target.className=='remove'){
         e.target.parentNode.parentNode.remove()
 
         //removing from array
@@ -85,6 +87,30 @@ table.addEventListener('click', (e)=>{
             e.target.dataset.id==book.id
         })
         myLibrary.splice(popIndex)
+    }
+})
+
+//TOGGLE FOR read
+function changeToggle(button){
+    let id = button.dataset.id
+    let flag
+    if (button.textContent=='false'){
+        flag = 'true'
+    }else{
+        flag = 'false'
+    }
+    for (i=0; i<myLibrary.length ;i++){
+        if (id == myLibrary[i].id){
+            myLibrary[i].read=flag
+            button.textContent=flag
+            break
+        }
+    }
+}
+
+table.addEventListener('click',(e)=>{
+    if (e.target.className=='read'){
+        changeToggle(e.target)
     }
 })
 
